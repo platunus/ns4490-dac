@@ -1,0 +1,41 @@
+// Definitions for NS NS4490 DAC
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2708";
+
+	fragment@0 {
+		target = <&i2s>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@1 {
+		target = <&i2c1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			ak4490_10: ak4490@10 {
+				#sound-dai-cells = <0>;
+				compatible = "akm,ak4490";
+				reg = <0x10>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&sound>;
+		ns4490_dac: __overlay__ {
+			compatible = "ns,ns4490-dac";
+			i2s-controller = <&i2s>;
+			pdn-gpios = <&gpio 16 1>;
+			status = "okay";
+		};
+	};
+
+};
